@@ -1,9 +1,12 @@
 package com.arafat.hospital.services.impl;
 
 import com.arafat.hospital.dtos.requestDtos.AppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
 import com.arafat.hospital.dtos.responseDtos.AppointmentResponse;
 import com.arafat.hospital.mappers.AppointmentMapper;
 import com.arafat.hospital.repositories.AppointmentRepository;
+import com.arafat.hospital.repositories.DoctorRepository;
+import com.arafat.hospital.repositories.PatientRepository;
 import com.arafat.hospital.services.AppointmentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -16,6 +19,8 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper mapper;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
     @Override
     public List<AppointmentResponse> getAppointments() {
@@ -54,5 +59,25 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void deleteById(Long id) {
         appointmentRepository.deleteById(id);
+    }
+
+    @Override
+    public AppointmentResponse assignAppointment(PatientAppointmentRequest request,  Long id) {
+        var patient = patientRepository.findById(request.getPatientId()).orElseThrow(
+                () -> new EntityNotFoundException("Patient not found with id: " + request.getPatientId())
+        );
+
+        var appointment = appointmentRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Appointment not found with id: " + id)
+        );
+
+        var doctor =  doctorRepository.findById(request.getDoctorId()).orElseThrow(
+                () -> new EntityNotFoundException("Doctor not found with id: " + request.getDoctorId())
+        );
+
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+
+        return mapper.toAppointmentResponse(appointmentRepository.save(appointment));
     }
 }

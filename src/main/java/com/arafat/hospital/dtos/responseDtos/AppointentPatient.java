@@ -1,15 +1,15 @@
 package com.arafat.hospital.dtos.responseDtos;
 
-import com.arafat.hospital.entities.Doctor;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
-public class DepartmentResponse {
+public class AppointentPatient {
     private Long id;
     private String name;
-    private Set<Doctor> doctors;
+    private String gender;
+    private String email;
+    private String mobileNumber;
 }

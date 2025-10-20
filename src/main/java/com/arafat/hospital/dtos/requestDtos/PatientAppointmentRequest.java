@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DepartmentRequest {
-    private String name;
+public class PatientAppointmentRequest {
+    private Long patientId;
+    private Long doctorId;
 }

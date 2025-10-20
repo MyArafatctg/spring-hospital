@@ -10,10 +10,11 @@ import java.util.List;
 @Getter
 @Setter
 public class PatientResponse {
+    private Long id;
     private String name;
     private String gender;
     private String email;
     private String mobileNumber;
     private Insurance insurance;
-    private List<Appointment> appointments;
+    private List<PatientAppointment> appointments;
 }

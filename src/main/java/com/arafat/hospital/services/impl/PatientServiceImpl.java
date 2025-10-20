@@ -1,8 +1,11 @@
 package com.arafat.hospital.services.impl;
 
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientInsuranceRequest;
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 import com.arafat.hospital.mappers.PatientMapper;
+import com.arafat.hospital.repositories.AppointmentRepository;
 import com.arafat.hospital.repositories.InsuranceRepository;
 import com.arafat.hospital.repositories.PatientRepository;
 import com.arafat.hospital.services.PatientService;
@@ -17,6 +20,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
+    private final InsuranceRepository insuranceRepository;
+    private final AppointmentRepository appointmentRepository;
+
     private final PatientMapper mapper;
 
     @Override
@@ -58,4 +64,19 @@ public class PatientServiceImpl implements PatientService {
     public void deleteById(Long id) {
         patientRepository.deleteById(id);
     }
+
+    @Override
+    public PatientResponse addInsurance(PatientInsuranceRequest request) {
+        var patient = patientRepository.findById(request.getPatientId()).orElseThrow(
+                () -> new EntityNotFoundException("Patient not found with id: " + request.getPatientId())
+        );
+
+        var insurance = insuranceRepository.findById(request.getInsuranceId()).orElseThrow(
+                () -> new EntityNotFoundException("Insurance not found with id: " + request.getInsuranceId())
+        );
+
+        patient.setInsurance(insurance);
+        return mapper.toPatientResponse(patientRepository.save(patient));
+    }
+
 }

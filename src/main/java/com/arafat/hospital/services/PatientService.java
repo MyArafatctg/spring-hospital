@@ -1,5 +1,7 @@
 package com.arafat.hospital.services;
 
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientInsuranceRequest;
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 
@@ -11,4 +13,6 @@ public interface PatientService {
     PatientResponse createPatient(PatientRequest request);
     PatientResponse updatePatient(PatientRequest request, Long id);
     void deleteById(Long id);
+
+    PatientResponse addInsurance(PatientInsuranceRequest request);
 }

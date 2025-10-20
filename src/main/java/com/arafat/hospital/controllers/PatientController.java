@@ -1,5 +1,7 @@
 package com.arafat.hospital.controllers;
 
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientInsuranceRequest;
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 import com.arafat.hospital.entities.Insurance;
@@ -47,5 +49,10 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/insurance")
+    public ResponseEntity<PatientResponse> addInsurance(
+           @RequestBody PatientInsuranceRequest request){
+        return new ResponseEntity<>(patientService.addInsurance(request), HttpStatus.OK);
+    }
 
 }

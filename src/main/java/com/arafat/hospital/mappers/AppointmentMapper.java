@@ -1,8 +1,12 @@
 package com.arafat.hospital.mappers;
 
 import com.arafat.hospital.dtos.requestDtos.AppointmentRequest;
+import com.arafat.hospital.dtos.responseDtos.AppointentDoctor;
+import com.arafat.hospital.dtos.responseDtos.AppointentPatient;
 import com.arafat.hospital.dtos.responseDtos.AppointmentResponse;
 import com.arafat.hospital.entities.Appointment;
+import com.arafat.hospital.entities.Doctor;
+import com.arafat.hospital.entities.Patient;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,10 +23,33 @@ public class AppointmentMapper {
         appointmentResponse.setId(appointment.getId());
         appointmentResponse.setAppointmentDate(appointment.getAppointmentDate());
         appointmentResponse.setReason(appointment.getReason());
-        appointmentResponse.setPatient(appointment.getPatient());
-        appointmentResponse.setDoctor(appointment.getDoctor());
+        appointmentResponse.setPatient(toPatient(appointment.getPatient()));
+        appointmentResponse.setDoctor(toDoctor(appointment.getDoctor()));
 
         return appointmentResponse;
 
+    }
+
+    private AppointentPatient toPatient(Patient  patient) {
+        AppointentPatient appointentPatient = new AppointentPatient();
+
+        appointentPatient.setId(patient.getId());
+        appointentPatient.setName(patient.getName());
+        appointentPatient.setGender(patient.getGender());
+        appointentPatient.setEmail(patient.getEmail());
+        appointentPatient.setMobileNumber(patient.getMobileNumber());
+
+        return appointentPatient;
+    }
+
+    private AppointentDoctor toDoctor(Doctor doctor) {
+        AppointentDoctor appointentDoctor = new AppointentDoctor();
+
+        appointentDoctor.setId(doctor.getId());
+        appointentDoctor.setName(doctor.getName());
+        appointentDoctor.setEmail(doctor.getEmail());
+        appointentDoctor.setSpecialisation(appointentDoctor.getSpecialisation());
+
+        return appointentDoctor;
     }
 }
