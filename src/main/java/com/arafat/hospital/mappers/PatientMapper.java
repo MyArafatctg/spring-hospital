@@ -20,10 +20,11 @@ public class PatientMapper {
         response.setEmail(request.getEmail());
         response.setInsurance(request.getInsurance());
         response.setAppointments(
+                request.getAppointments() != null ?
                 request.getAppointments()
                         .stream()
-                        .map(appointment -> toPatientAppointment(appointment))
-                        .toList());
+                        .map(this::toPatientAppointment)
+                        .toList() : null);
 
         return response;
     };

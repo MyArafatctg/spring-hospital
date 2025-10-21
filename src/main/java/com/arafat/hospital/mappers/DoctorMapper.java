@@ -6,14 +6,20 @@ import com.arafat.hospital.dtos.responseDtos.DoctorResponse;
 import com.arafat.hospital.dtos.responseDtos.PatientAppointment;
 import com.arafat.hospital.entities.Appointment;
 import com.arafat.hospital.entities.Doctor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 @Getter
 @Setter
+@AllArgsConstructor
 public class DoctorMapper {
+    private final DepartmentMapper departmentMapper;
+
     public DoctorResponse toDoctorResponse(Doctor doctor) {
 
         DoctorResponse response = new DoctorResponse();
@@ -21,8 +27,16 @@ public class DoctorMapper {
         response.setName(doctor.getName());
         response.setEmail(doctor.getEmail());
         response.setSpecialisation(doctor.getSpecialisation());
-        response.setAppointment(doctor.getAppointment());
-        response.setDepartments(doctor.getDepartments());
+        response.setAppointment(
+                doctor.getAppointment() != null ?
+                doctor.getAppointment()
+                .stream()
+                .map(this::toPatientAppointment)
+                .toList() : null);
+        response.setDepartments(doctor.getDepartments()
+                .stream()
+                .map(departmentMapper::toDepartmentResponse)
+                .collect(Collectors.toSet()));
 
         return response;
     }
@@ -37,11 +51,22 @@ public class DoctorMapper {
         return doctor;
     }
 
-//    private PatientAppointment toPatientAppointment(Appointment appointment) {
-//        PatientAppointment patientAppointment = new PatientAppointment();
-//
-//        patientAppointment.setId(appointment.getId());
-//        patientAppointment.setAppointmentDate(appointment.getAppointmentDate());
-//        patientAppointment.set
-//    }
+    private PatientAppointment toPatientAppointment(Appointment appointment) {
+        PatientAppointment patientAppointment = new PatientAppointment();
+
+        patientAppointment.setId(appointment.getId());
+        patientAppointment.setAppointmentDate(appointment.getAppointmentDate());
+        patientAppointment.setReason(appointment.getReason());
+        patientAppointment.setDoctor(
+                appointment.getDoctor() != null ?
+                new AppointmentDoctor(
+                        appointment.getDoctor().getId(),
+                        appointment.getDoctor().getName(),
+                        appointment.getDoctor().getSpecialisation(),
+                        appointment.getDoctor().getEmail()
+                ) : null
+        );
+
+        return patientAppointment;
+    }
 }

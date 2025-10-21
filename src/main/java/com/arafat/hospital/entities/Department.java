@@ -19,6 +19,16 @@ public class Department {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "departments")
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_department",
+            joinColumns = @JoinColumn(name = "department_id"),
+            inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
     private Set<Doctor> doctors = new HashSet<>();
+
+    public void addDoctor(Doctor doctor) {
+        doctors.add(doctor);
+        doctor.getDepartments().add(this);
+    }
 }

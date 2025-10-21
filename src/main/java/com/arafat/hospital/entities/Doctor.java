@@ -30,12 +30,7 @@ public class Doctor {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<Appointment> appointment;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "doctor_department",
-            joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "department_id")
-    )
+    @ManyToMany(mappedBy = "doctors")
     private Set<Department> departments = new HashSet<>();
 
 }

@@ -1,10 +1,9 @@
 package com.arafat.hospital.controllers;
 
 import com.arafat.hospital.dtos.requestDtos.DepartmentRequest;
+import com.arafat.hospital.dtos.requestDtos.DoctorRequest;
 import com.arafat.hospital.dtos.responseDtos.DepartmentResponse;
-import com.arafat.hospital.dtos.responseDtos.DoctorResponse;
 import com.arafat.hospital.services.DepartmentService;
-import com.arafat.hospital.services.DoctorServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +44,21 @@ public class DepartmentController {
     public ResponseEntity<Void> deleteDoctorById(@PathVariable(name = "id") Long id) {
         departmentService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/doctor")
+    public ResponseEntity<DepartmentResponse> addDoctor(
+            @RequestBody DoctorRequest request,
+            @PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(departmentService.addNewDoctor(request,id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{departmentId}/doctors/{doctorId}")
+    public ResponseEntity<DepartmentResponse> addDoctorToDepartment(
+            @PathVariable Long departmentId,
+            @PathVariable Long doctorId) {
+
+        return ResponseEntity.ok(departmentService.addDoctorToDepartment(departmentId, doctorId));
     }
 
 }
