@@ -1,7 +1,7 @@
 package com.arafat.hospital.mappers;
 
 import com.arafat.hospital.dtos.requestDtos.AppointmentRequest;
-import com.arafat.hospital.dtos.responseDtos.AppointentDoctor;
+import com.arafat.hospital.dtos.responseDtos.AppointmentDoctor;
 import com.arafat.hospital.dtos.responseDtos.AppointentPatient;
 import com.arafat.hospital.dtos.responseDtos.AppointmentResponse;
 import com.arafat.hospital.entities.Appointment;
@@ -23,8 +23,8 @@ public class AppointmentMapper {
         appointmentResponse.setId(appointment.getId());
         appointmentResponse.setAppointmentDate(appointment.getAppointmentDate());
         appointmentResponse.setReason(appointment.getReason());
-        appointmentResponse.setPatient(toPatient(appointment.getPatient()));
-        appointmentResponse.setDoctor(toDoctor(appointment.getDoctor()));
+        appointmentResponse.setPatient(appointment.getPatient() != null ? toPatient(appointment.getPatient()) : null);
+        appointmentResponse.setDoctor(appointment.getDoctor() != null ? toDoctor(appointment.getDoctor()) : null);
 
         return appointmentResponse;
 
@@ -42,14 +42,14 @@ public class AppointmentMapper {
         return appointentPatient;
     }
 
-    private AppointentDoctor toDoctor(Doctor doctor) {
-        AppointentDoctor appointentDoctor = new AppointentDoctor();
+    private AppointmentDoctor toDoctor(Doctor doctor) {
+        AppointmentDoctor appointmentDoctor = new AppointmentDoctor();
 
-        appointentDoctor.setId(doctor.getId());
-        appointentDoctor.setName(doctor.getName());
-        appointentDoctor.setEmail(doctor.getEmail());
-        appointentDoctor.setSpecialisation(appointentDoctor.getSpecialisation());
+        appointmentDoctor.setId(doctor.getId());
+        appointmentDoctor.setName(doctor.getName());
+        appointmentDoctor.setEmail(doctor.getEmail());
+        appointmentDoctor.setSpecialisation(appointmentDoctor.getSpecialisation());
 
-        return appointentDoctor;
+        return appointmentDoctor;
     }
 }

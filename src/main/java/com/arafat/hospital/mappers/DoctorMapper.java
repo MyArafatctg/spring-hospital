@@ -1,7 +1,10 @@
 package com.arafat.hospital.mappers;
 
 import com.arafat.hospital.dtos.requestDtos.DoctorRequest;
+import com.arafat.hospital.dtos.responseDtos.AppointmentDoctor;
 import com.arafat.hospital.dtos.responseDtos.DoctorResponse;
+import com.arafat.hospital.dtos.responseDtos.PatientAppointment;
+import com.arafat.hospital.entities.Appointment;
 import com.arafat.hospital.entities.Doctor;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,4 +36,12 @@ public class DoctorMapper {
 
         return doctor;
     }
+
+//    private PatientAppointment toPatientAppointment(Appointment appointment) {
+//        PatientAppointment patientAppointment = new PatientAppointment();
+//
+//        patientAppointment.setId(appointment.getId());
+//        patientAppointment.setAppointmentDate(appointment.getAppointmentDate());
+//        patientAppointment.set
+//    }
 }

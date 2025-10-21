@@ -1,20 +1,24 @@
 package com.arafat.hospital.services.impl;
 
-import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentUpdate;
 import com.arafat.hospital.dtos.requestDtos.PatientInsuranceRequest;
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
+import com.arafat.hospital.dtos.responseDtos.PatientAppointment;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 import com.arafat.hospital.mappers.PatientMapper;
 import com.arafat.hospital.repositories.AppointmentRepository;
+import com.arafat.hospital.repositories.DoctorRepository;
 import com.arafat.hospital.repositories.InsuranceRepository;
 import com.arafat.hospital.repositories.PatientRepository;
+import com.arafat.hospital.services.DoctorServices;
+import com.arafat.hospital.services.InsuranceService;
 import com.arafat.hospital.services.PatientService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +28,9 @@ public class PatientServiceImpl implements PatientService {
     private final AppointmentRepository appointmentRepository;
 
     private final PatientMapper mapper;
+    private final InsuranceService insuranceService;
+    private final DoctorServices doctorServices;
+    private final DoctorRepository doctorRepository;
 
     @Override
     public List<PatientResponse> getPatients() {
@@ -76,6 +83,44 @@ public class PatientServiceImpl implements PatientService {
         );
 
         patient.setInsurance(insurance);
+        return mapper.toPatientResponse(patientRepository.save(patient));
+    }
+
+    @Override
+    public PatientResponse removeInsurance(PatientInsuranceRequest request) {
+        var patient = patientRepository.findById(request.getPatientId()).orElseThrow(
+                () -> new EntityNotFoundException("Patient not found with id: " + request.getPatientId())
+        );
+
+        if (!Objects.equals(patient.getInsurance().getId(), request.getInsuranceId())) {
+            throw new EntityNotFoundException("Insurance not found with id: " + request.getInsuranceId());
+        };
+
+        patient.setInsurance(null);
+        patientRepository.save(patient);
+        insuranceService.deleteById(request.getInsuranceId());
+
+        return mapper.toPatientResponse(patient);
+    }
+
+    @Override
+    public PatientResponse updateAppointment(PatientAppointmentUpdate request, Long patientId, Long appointmentId) {
+        var  patient = patientRepository.findById(patientId).orElseThrow(
+                () -> new EntityNotFoundException("Patient not found with id: " + patientId)
+        );
+
+        var patientAppointment = patient.getAppointments()
+                .stream()
+                .filter(appointment -> appointmentId.equals(appointment.getId()))
+                .findFirst()
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Appointment not found with id: " + appointmentId)
+                );
+
+
+        patientAppointment.setReason(request.getReason());
+        patientAppointment.setAppointmentDate(request.getAppointmentDate());
+
         return mapper.toPatientResponse(patientRepository.save(patient));
     }
 

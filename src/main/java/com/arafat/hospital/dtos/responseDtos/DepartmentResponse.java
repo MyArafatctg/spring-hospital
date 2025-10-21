@@ -1,6 +1,5 @@
 package com.arafat.hospital.dtos.responseDtos;
 
-import com.arafat.hospital.entities.Doctor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +10,5 @@ import java.util.Set;
 public class DepartmentResponse {
     private Long id;
     private String name;
-    private Set<Doctor> doctors;
+    private Set<AppointmentDoctor> doctors;
 }

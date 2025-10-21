@@ -1,15 +1,13 @@
-package com.arafat.hospital.dtos.responseDtos;
+package com.arafat.hospital.dtos.requestDtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
-public class PatientAppointment {
-    private Long id;
+@Getter
+public class PatientAppointmentUpdate {
     private LocalDateTime appointmentDate;
     private String reason;
-    private AppointmentDoctor doctor;
 }

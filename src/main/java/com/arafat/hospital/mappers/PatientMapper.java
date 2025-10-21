@@ -1,16 +1,12 @@
 package com.arafat.hospital.mappers;
 
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
-import com.arafat.hospital.dtos.responseDtos.AppointentDoctor;
-import com.arafat.hospital.dtos.responseDtos.AppointmentResponse;
+import com.arafat.hospital.dtos.responseDtos.AppointmentDoctor;
 import com.arafat.hospital.dtos.responseDtos.PatientAppointment;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 import com.arafat.hospital.entities.Appointment;
-import com.arafat.hospital.entities.Insurance;
 import com.arafat.hospital.entities.Patient;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 public class PatientMapper {
@@ -48,7 +44,7 @@ public class PatientMapper {
         response.setId(appointment.getId());
         response.setReason(appointment.getReason());
         response.setDoctor(
-                new AppointentDoctor(
+                new AppointmentDoctor(
                         appointment.getDoctor().getId(),
                         appointment.getDoctor().getName(),
                         appointment.getDoctor().getEmail(),

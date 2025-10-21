@@ -1,6 +1,7 @@
 package com.arafat.hospital.services.impl;
 
 import com.arafat.hospital.dtos.requestDtos.DepartmentRequest;
+import com.arafat.hospital.dtos.responseDtos.AppointmentDoctor;
 import com.arafat.hospital.dtos.responseDtos.DepartmentResponse;
 import com.arafat.hospital.mappers.DepartmentMapper;
 import com.arafat.hospital.repositories.DepartmentRepository;
@@ -59,5 +60,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         );
 
         departmentRepository.deleteById(id);
+    }
+
+    @Override
+    public DepartmentResponse addDoctors(AppointmentDoctor doctor, Long id) {
+        return null;
     }
 }

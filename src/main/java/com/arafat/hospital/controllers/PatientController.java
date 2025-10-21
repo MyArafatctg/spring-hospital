@@ -1,8 +1,10 @@
 package com.arafat.hospital.controllers;
 
 import com.arafat.hospital.dtos.requestDtos.PatientAppointmentRequest;
+import com.arafat.hospital.dtos.requestDtos.PatientAppointmentUpdate;
 import com.arafat.hospital.dtos.requestDtos.PatientInsuranceRequest;
 import com.arafat.hospital.dtos.requestDtos.PatientRequest;
+import com.arafat.hospital.dtos.responseDtos.PatientAppointment;
 import com.arafat.hospital.dtos.responseDtos.PatientResponse;
 import com.arafat.hospital.entities.Insurance;
 import com.arafat.hospital.entities.Patient;
@@ -53,6 +55,20 @@ public class PatientController {
     public ResponseEntity<PatientResponse> addInsurance(
            @RequestBody PatientInsuranceRequest request){
         return new ResponseEntity<>(patientService.addInsurance(request), HttpStatus.OK);
+    }
+
+    @PutMapping("/insurance/delete")
+    public ResponseEntity<PatientResponse> removeInsurance(@RequestBody PatientInsuranceRequest request){
+        return new ResponseEntity<>(patientService.removeInsurance(request), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/appointment/{appointmentId}")
+    public ResponseEntity<PatientResponse> updateAppointment(
+            @PathVariable(name = "id") Long id,
+            @PathVariable(name = "appointmentId")  Long appointmentId,
+            @RequestBody PatientAppointmentUpdate request
+    ) {
+        return new ResponseEntity<>(patientService.updateAppointment(request,id,appointmentId), HttpStatus.OK);
     }
 
 }
